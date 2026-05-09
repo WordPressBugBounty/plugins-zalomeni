@@ -1,56 +1,72 @@
 === Zalomení ===
-Contributors: honza.skypala
-Donate link: http://www.honza.info
-Tags: grammar, Czech
-Requires at least: 4.0
-Tested up to: 6.2
-Stable tag: 1.5
+Contributors: vyskoczilova, honza.skypala
+Tags: grammar, Czech, typography, non-breaking space
+Requires at least: 6.0
+Tested up to: 6.9
+Stable tag: 2.0.0
+Requires PHP: 7.0
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin helps to keep some grammar rules in Czech language related to word wrapping, e.g. prepositions 'k', 's', 'v' and 'z' cannot be placed at the end of line.
+Zalomení is a typography plugin that inserts non-breaking spaces after Czech one-letter prepositions, conjunctions, and abbreviations.
 
 
 == Description ==
 
-For English, see below.
+Zalomení is a WordPress plugin that automatically applies Czech typographic rules to post content, titles, comments, and widgets. It replaces ordinary spaces with non-breaking spaces wherever Czech typography forbids a line break, so editors don't have to type them by hand.
 
-Czech: Upravujeme-li písemný dokument, radí nám Pravidla českého pravopisu nepsat neslabičné předložky v, s, z, k na konec řádku, ale psát je na stejný řádek se slovem, které nese přízvuk (např. ve spojení k mostu, s bratrem, v Plzni, z&nbsp;nádraží). Typografické normy jsou ještě přísnější: podle některých je nepatřičné ponechat na konci řádku jakékoli jednopísmenné slovo, tedy také předložky a spojky a, i, o, u;. Někteří pisatelé dokonce nechtějí z estetických důvodů ponechávat na konci řádků jakékoli jednoslabičné výrazy (např. ve, ke, ku, že, na, do, od, pod).
+Although Czech is the default, the plugin is structured around editable lists of prepositions, conjunctions, and abbreviations — so it can be adapted to **Slovak** (and other closely related languages) simply by adjusting those lists in the settings.
 
-<a href="http://prirucka.ujc.cas.cz/?id=880" title="Více informací k problematice">Více informací</a> na webu Ústavu pro jazyk český, Akademie věd ČR.
+= Maintainer =
 
-Tento plugin řeší některé z uvedených příkladů: v textu nahrazuje běžné mezery za pevné tak, aby nedošlo k zalomení řádku v nevhodném místě.
+Zalomení is actively maintained by [Karolína Vyskočilová](https://kybernaut.cz) (WordPress.org username: `vyskoczilova`), an independent WordPress developer based in Czechia. She took the plugin over in 2026 after three years without updates, ran a full security audit, and now ships regular releases. The plugin was originally created by Honza Skýpala, whose work is gratefully acknowledged.
 
-English: This plugin helps to keep some grammar rules in Czech language related to word wrapping, e.g. prepositions 'k', 's', 'v' and 'z' cannot be placed at the end of line.
+= What the plugin handles =
 
+* **Prepositions** — single-letter prepositions like *k*, *s*, *v*, *z* must not appear at the end of a line.
+* **Conjunctions** — single-letter conjunctions like *a*, *i*, *o*, *u*.
+* **Abbreviations** — common Czech abbreviations (e.g. *např.*, *tj.*, *tzv.*).
+* **Numbers and units** — prevents breaks between a number and its unit (e.g. *5 kg*, *10 Kč*).
+* **Number formatting** — keeps formatted numbers together (e.g. phone numbers like *800 123 456*).
+* **Ordinal numbers** — prevents breaks after ordinals, especially in dates (e.g. *1. ledna*).
+* **Scales and ratios** — keeps expressions like *1 : 50 000* on one line.
+* **Custom terms** — user-defined multi-word terms that should never be broken across lines.
+
+All options are configurable under **Settings → Reading**. The plugin exposes a `zalomeni_filtry` filter so developers can add or remove the WordPress hooks Zalomení applies to.
+
+For more information on Czech typographic rules, see the [Institute of the Czech Language](https://prirucka.ujc.cas.cz/?id=880).
 
 == Installation ==
 
-1.	Nahrajte kompletní adresář pluginu do wp-content/plugins.
-2.	Aktivujte plugin Zalomení v administraci plug-inů.
-3.	V Nastavení->Zobrazování můžete nastavit jednotlivé volby.
+1. Upload the plugin directory to `wp-content/plugins/`.
+2. Activate the plugin through the Plugins menu in WordPress.
+3. Configure options under Settings → Reading.
 
 == Frequently Asked Questions ==
 
-Tento plugin se aplikuje na řadu filtrů WordPressu -- obsah příspěvku, název příspěvku, název celého webu atd. Konkrétně se jedná o tyto filtry:
+= Is Zalomení actively maintained? =
 
-* comment_author
-* term_name
-* link_name
-* link_description
-* link_notes
-* bloginfo
-* wp_title
-* widget_title
-* term_description
-* the_title
-* the_content
-* the_excerpt
-* comment_text
-* single_post_title
-* list_cats
+Yes. The plugin returned to active development in 2026 under maintainer [Karolína Vyskočilová](https://kybernaut.cz) (`vyskoczilova` on WordPress.org). Issues and security fixes are addressed promptly.
 
-Některé uživatelské instalace WordPressu s tím mohou mít problém. Například se může jednat o e-shop, který používá název příspěvku jako název produktu a v něm potřebuje, aby Zalomení nebylo aplikováno; jinak chce ovšem nadále Zalomení používat.
+= Is the 2.0 release safe to install? =
 
-Proto přináší plugin Zalomení svůj vlastní filtr <em>zalomeni_filtry</em>. Můžete si pak do své šablony nebo do svého webu přidat funkci, v které ze seznamu filtrů odstraníte ten, u kterého nechcete Zalomení použít. Příklad zrušení aplikace Zalomení na název příspěvku: 
+Yes. 2.0 is a security release: all user inputs are sanitized, regex inputs are escaped, admin output is escaped, and the codebase is now covered by PHPUnit tests. Updating is recommended for anyone still on 1.x.
+
+= Does it work with the block editor (Gutenberg) and Classic Editor? =
+
+Yes. Zalomení runs on WordPress output filters (`the_content`, `the_title`, `the_excerpt`, etc.), so it works regardless of which editor produced the content.
+
+= Can I use it for Slovak? =
+
+Yes. The default lists of prepositions, conjunctions, and abbreviations are Czech, but they're fully editable under Settings → Reading. Replacing the Czech entries with Slovak ones gives you a working Slovak typography filter without any code changes.
+
+= Which WordPress filters does the plugin apply to? =
+
+The plugin applies to these filters by default: `comment_author`, `term_name`, `link_name`, `link_description`, `link_notes`, `bloginfo`, `wp_title`, `widget_title`, `term_description`, `the_title`, `the_content`, `the_excerpt`, `comment_text`, `single_post_title`, `list_cats`.
+
+= Can I disable the plugin for specific filters? =
+
+Yes. Use the `zalomeni_filtry` filter to remove or add filters:
 
 <code>add_filter('zalomeni_filtry', 'remove_title_from_zalomeni');
 function remove_title_from_zalomeni(array $filters) {
@@ -58,14 +74,32 @@ function remove_title_from_zalomeni(array $filters) {
   return $filters;
 }</code>
 
-Poznámka: tímto způsobem můžete filtry nejen odebírat, ale také přidávat, pokud to potřebujete.
-
 == Screenshots ==
 
-1. Konfigurace pluginu
-2. Příklad
+1. Plugin settings
+2. Example output
 
 == Changelog ==
+
+= 2.0.0 (2026-05-06) =
+
+* New maintainer: Karolína Vyskočilová (vyskoczilova)
+* Security: added sanitize callbacks to all register_setting calls
+* Security: escaped regex metacharacters in user-defined option lists (preg_quote)
+* Security: added preg_replace error handling to prevent null output
+* Security: filtered empty list items to prevent catch-all regex patterns
+* Security: escaped custom terms to prevent regex injection while preserving \d, \w, \s
+* Security: added output escaping (esc_attr, esc_js, esc_textarea) in admin settings
+* Security: replaced dynamic constant() calls with static lookup array
+* Security: inlined WP-private _wptexturize_pushpop_element function
+* Security: added direct file access guard
+* Improvement: added uninstall.php for clean option removal
+* Improvement: license changed from WTFPL to GPL-2.0-or-later
+* Improvement: all admin strings are now translatable via wp i18n make-pot
+* Improvement: lazy-load plugin.php only on admin pages
+* Improvement: guarded pre-1.3 migration against missing options
+* Improvement: strict comparisons and PHP 8+ compatibility throughout
+* Improvement: updated minimum requirements to WordPress 6.0 and PHP 7.0
 
 = 1.5 =
 * bug fix: kompatibilita s PHP 8+
@@ -117,52 +151,11 @@ Poznámka: tímto způsobem můžete filtry nejen odebírat, ale také přidáva
 = 1.0 =
 * Initial release.
 
-== Frequently Asked Questions ==
+== Upgrade Notice ==
 
-Tento plugin se aplikuje na řadu filtrů WordPressu -- obsah příspěvku, název příspěvku, název celého webu atd. Konkrétně se jedná o tyto filtry:
-
-* comment_author
-* term_name
-* link_name
-* link_description
-* link_notes
-* bloginfo
-* wp_title
-* widget_title
-* term_description
-* the_title
-* the_content
-* the_excerpt
-* comment_text
-* single_post_title
-* list_cats
-
-Některé uživatelské instalace WordPressu s tím mohou mít problém. Například se může jednat o e-shop, který používá název příspěvku jako název produktu a v něm potřebuje, aby Zalomení nebylo aplikováno; jinak chce ovšem nadále Zalomení používat.
-
-Proto přináší plugin Zalomení svůj vlastní filtr <em>zalomeni_filtry</em>. Můžete si pak do své šablony nebo do svého webu přidat funkci, v které ze seznamu filtrů odstraníte ten, u kterého nechcete Zalomení použít. Příklad zrušení aplikace Zalomení na název příspěvku: 
-
-<code>add_filter('zalomeni_filtry', 'remove_title_from_zalomeni');
-function remove_title_from_zalomeni(array $filters) {
-  unset($filters['the_title']);
-  return $filters;
-}</code>
-
-Poznámka: tímto způsobem můžete filtry nejen odebírat, ale také přidávat, pokud to potřebujete.
+= 2.0.0 =
+Security release. All user inputs are now sanitized and escaped. Update immediately.
 
 == Licence ==
 
-WTFPL License 2.0 applies
-
-<code>           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                   Version 2, December 2004
-
-Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
-
-Everyone is permitted to copy and distribute verbatim or modified
-copies of this license document, and changing it is allowed as long
-as the name is changed.
-
-           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-
- 0. You just DO WHAT THE FUCK YOU WANT TO.</code>
+This plugin is licensed under the GPL-2.0-or-later license. See https://www.gnu.org/licenses/gpl-2.0.html for details.
